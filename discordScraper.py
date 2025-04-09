@@ -3,8 +3,6 @@ import json
 from pynput.keyboard import Key, Controller
 import time
 
-keyboard = Controller()
-
 def retrieveMessages(channelID):
     headers = {
         'authorization': 'AUTH TOKEN'
@@ -14,6 +12,7 @@ def retrieveMessages(channelID):
     return json.loads(r.text)
 
 if __name__ == "__main__":
+    keyboard = Controller()
 
     while True:
         messages = retrieveMessages(811875070606835732)
