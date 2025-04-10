@@ -91,7 +91,7 @@ def handleConsequence(action, message=None):
         print("error finding action")
 
     # Wait for next command
-    time.sleep(2) 
+    time.sleep(1) 
     
 def sendLetter():
     pydirectinput.typewrite("hello this is a test long test haha!")
