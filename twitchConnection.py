@@ -32,6 +32,9 @@ while True:
     if (len(responseSections) > 2):
         message = responseSections[2].lower().strip()
         print(message, "\n")
+    else:
+        print("response not a message, skipping...")
+        continue
 
     # Attempt to match message to expected text
     for commandLibrary in actionDefinitions.library:
