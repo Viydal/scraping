@@ -2,10 +2,10 @@ import pydirectinput
 import time
 
 # Defining movement terms
-forwardCommands = ["move forward", "forward", "advance", "go forward"]
-backCommands = ["back", "return", "go backwards", "go back", "backwards"]
-leftCommands = ["left", "go left"]
-rightCommands = ["right", "go right"]
+forwardCommands = ["move forward", "move forwards", "forward", "forwards", "go forward", "go forwards"]
+backCommands = ["move backward", "move backwards", "back", "go back", "backwards", "go backwards",]
+leftCommands = ["left", "go left", "move left"]
+rightCommands = ["right", "go right", "move right"]
 clickCommands = ["click", "punch", "hit", "attack"]
 crouchCommands = ["crouch", "sit"]
 jumpCommands = ['jump']
