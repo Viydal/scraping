@@ -2,17 +2,18 @@ import pydirectinput
 import time
 
 # Defining movement terms
-forwardCommands = ["move forward", "move forwards", "forward", "forwards", "go forward", "go forwards", "walk forward", "walk forwards"]
-backCommands = ["move backward", "move backwards", "back", "go back", "backwards", "go backward", "go backwards", "walk backward", "walk backwards"]
-leftCommands = ["left", "go left", "move left", "walk left"]
-rightCommands = ["right", "go right", "move right", "walk right"]
+forwardCommands = ["w", "move forward", "move forwards", "forward", "forwards", "go forward", "go forwards", "walk forward", "walk forwards"]
+backCommands = ["s", "move backward", "move backwards", "back", "go back", "backwards", "go backward", "go backwards", "walk backward", "walk backwards"]
+leftCommands = ["a", "left", "go left", "move left", "walk left"]
+rightCommands = ["d", "right", "go right", "move right", "walk right"]
 clickCommands = ["click", "punch", "hit", "attack"]
 crouchCommands = ["crouch", "sit"]
-jumpCommands = ['jump']
-inventoryCommands = ["drop", "throw", "water bucket release", "water bucket, release"]
+jumpCommands = ["space", 'jump']
+inventoryCommands = ["q", "drop", "throw", "water bucket release", "water bucket, release"]
 lookCommands = ["look left", "look right", "look up", "look down", "turn left", "turn right", "look back", "look behind", "turn back"]
+trollCommands = ["the game will now close", "show me those coords buddy"]
 
-library = [forwardCommands, backCommands, leftCommands, rightCommands, clickCommands, crouchCommands, jumpCommands, inventoryCommands, lookCommands]
+library = [forwardCommands, backCommands, leftCommands, rightCommands, clickCommands, crouchCommands, jumpCommands, inventoryCommands, lookCommands, trollCommands]
 
 # Match command to the appropriate library
 def matchCommand(message, commandLibrary):
@@ -46,6 +47,9 @@ def matchCommand(message, commandLibrary):
             elif (commandLibrary == lookCommands):
                 print("we in look library")
                 handleConsequence("look", message)
+            elif (commandLibrary == trollCommands):
+                print("we in troll library")
+                handleConsequence("troll", message)
             else:
                 print("no match")
 
@@ -87,6 +91,11 @@ def handleConsequence(action, message=None):
             pydirectinput.move(400, 400)
         elif (message == "look back" or message == "look behind" or message == "turn back"):
             pydirectinput.move(1000, 400)
+    elif (action == "troll"):
+        if (message == "the game will now close"):
+            pydirectinput.press("f4")
+        elif (message == "show me those coords buddy"):
+            pydirectinput.press("f3")
     else:
         print("error finding action")
 
