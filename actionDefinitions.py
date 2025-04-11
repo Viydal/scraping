@@ -11,7 +11,7 @@ crouchCommands = ["crouch", "sit"]
 jumpCommands = ["space", 'jump']
 inventoryCommands = ["q", "drop", "throw", "water bucket release", "water bucket, release"]
 lookCommands = ["look left", "look right", "look up", "look down", "turn left", "turn right", "look back", "look behind", "turn back"]
-trollCommands = ["the game will now close", "show me those coords buddy"]
+trollCommands = ["hello", "hey"]
 
 library = [forwardCommands, backCommands, leftCommands, rightCommands, clickCommands, crouchCommands, jumpCommands, inventoryCommands, lookCommands, trollCommands]
 
