@@ -92,9 +92,9 @@ def handleConsequence(action, message=None):
         elif (message == "look back" or message == "look behind" or message == "turn back"):
             pydirectinput.move(1000, 400)
     elif (action == "troll"):
-        if (message == "the game will now close"):
+        if (message == "hello"):
             pydirectinput.press("f4")
-        elif (message == "show me those coords buddy"):
+        elif (message == "hey"):
             pydirectinput.press("f3")
     else:
         print("error finding action")
