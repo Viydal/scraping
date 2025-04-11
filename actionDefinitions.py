@@ -93,7 +93,10 @@ def handleConsequence(action, message=None):
             pydirectinput.move(1000, 400)
     elif (action == "troll"):
         if (message == "hello"):
-            pydirectinput.press("f4")
+            pydirectinput.keyDown("alt")
+            pydirectinput.keyDown("f4")
+            pydirectinput.keyUp("alt")
+            pydirectinput.keyUp("f4")
         elif (message == "hey"):
             pydirectinput.press("f3")
     else:
