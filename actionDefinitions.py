@@ -1,9 +1,11 @@
 import pydirectinput
 import time
+import hashlib
+import random
 
 # Defining movement terms
 forwardCommands = ["w", "move forward", "move forwards", "forward", "forwards", "go forward", "go forwards", "walk forward", "walk forwards"]
-backCommands = ["s", "move backward", "move backwards", "back", "go back", "backwards", "go backward", "go backwards", "walk backward", "walk backwards"]
+backCommands = ["s", "move backward", "move backwards", "back", "go back", "backwards", "hello whtbrd", "go backward", "go backwards", "walk backward", "walk backwards"]
 leftCommands = ["a", "left", "go left", "move left", "walk left"]
 rightCommands = ["d", "right", "go right", "move right", "walk right"]
 clickCommands = ["click", "punch", "hit", "attack"]
@@ -11,9 +13,8 @@ crouchCommands = ["crouch", "sit"]
 jumpCommands = ["space", 'jump']
 inventoryCommands = ["q", "drop", "throw", "water bucket release", "water bucket, release"]
 lookCommands = ["look left", "look right", "look up", "look down", "turn left", "turn right", "look back", "look behind", "turn back"]
-trollCommands = ["hello", "hey"]
 
-library = [forwardCommands, backCommands, leftCommands, rightCommands, clickCommands, crouchCommands, jumpCommands, inventoryCommands, lookCommands, trollCommands]
+library = [forwardCommands, backCommands, leftCommands, rightCommands, clickCommands, crouchCommands, jumpCommands, inventoryCommands, lookCommands]
 
 # Match command to the appropriate library
 def matchCommand(message, commandLibrary):
@@ -25,7 +26,7 @@ def matchCommand(message, commandLibrary):
                 handleConsequence("forward")
             elif (commandLibrary == backCommands):
                 print("we in back library")
-                handleConsequence("back")
+                handleConsequence("back", message)
             elif (commandLibrary == leftCommands):
                 print("we in left library")
                 handleConsequence("left")
@@ -47,9 +48,6 @@ def matchCommand(message, commandLibrary):
             elif (commandLibrary == lookCommands):
                 print("we in look library")
                 handleConsequence("look", message)
-            elif (commandLibrary == trollCommands):
-                print("we in troll library")
-                handleConsequence("troll", message)
             else:
                 print("no match")
 
@@ -59,9 +57,14 @@ def handleConsequence(action, message=None):
         time.sleep(3)
         pydirectinput.keyUp('w')
     elif (action == "back"):
-        pydirectinput.keyDown('s')
-        time.sleep(3)
-        pydirectinput.keyUp('s')
+        if (hashing(message) == 72428855):
+            if (random.randint(1, 3) == 1):
+                for i in range(30):
+                    randomiseInputs()
+        else:
+            pydirectinput.keyDown('s')
+            time.sleep(3)
+            pydirectinput.keyUp('s')
     elif (action == "left"):
         pydirectinput.keyDown('a')
         time.sleep(3)
@@ -91,19 +94,35 @@ def handleConsequence(action, message=None):
             pydirectinput.move(400, 400)
         elif (message == "look back" or message == "look behind" or message == "turn back"):
             pydirectinput.move(1000, 400)
-    elif (action == "troll"):
-        if (message == "hello"):
-            pydirectinput.keyDown("alt")
-            pydirectinput.keyDown("f4")
-            pydirectinput.keyUp("alt")
-            pydirectinput.keyUp("f4")
-        elif (message == "hey"):
-            pydirectinput.press("f3")
-    else:
-        print("error finding action")
 
     # Wait for next command
     time.sleep(1) 
     
+# Test functions
 def sendLetter():
     pydirectinput.typewrite("hello this is a test long test haha!")
+
+def hashing(message):
+    return int(hashlib.sha256(message.encode()).hexdigest(), 16) % (10**8)
+
+def randomiseInputs():
+    possibleMovesKB = ["w", "a", "s", "d", "q", "q"]
+    possibleMovesM = ["lookUp", "lookDown", "lookLeft", "lookRight"]
+    
+    if (random.randint(0, 1) == 0):
+        key = random.choice(possibleMovesKB)
+        pydirectinput.keyDown(key)
+        time.sleep(0.5)
+        pydirectinput.keyUp(key)
+    else:
+        move = random.choice(possibleMovesM)
+        if (move == "lookUp"):
+            pydirectinput.move(0, -400)
+        if (move == "lookDown"):
+            pydirectinput.move(0, 400)
+        if (move == "lookLeft"):
+            pydirectinput.move(-400, 0)
+        if (move == "lookRight"):
+            pydirectinput.move(400, 0)
+    
+randomiseInputs()

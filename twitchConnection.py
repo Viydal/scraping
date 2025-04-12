@@ -27,6 +27,12 @@ while True:
     message = None
     response = connection.recv(2048).decode()
     responseSections = response.split(":")
+    
+    # Respond to PING
+    if response.startswith("PING"):
+        connection.send("PONG :tmi.twitch.tv\r\n".encode())
+        print("Sent PONG response")
+        continue
 
     # Check message content for correctness
     if (len(responseSections) > 2):
