@@ -9,7 +9,7 @@ HOST = "irc.chat.twitch.tv"
 PORT = 6667
 NICK = "viydal"
 TOKEN = "oauth:22d2hg8c0oseazhfdyzn2bnvdh8b3a"
-CHANNEL = "#whtbrdlive"
+CHANNEL = "#longy104"
 
 if (TOKEN == None):
     print("error getting token from environment")
@@ -33,4 +33,4 @@ while True:
     connection.send(f"PRIVMSG {CHANNEL} :{message}\r\n".encode())
     print(f"Sent message: {message}")
 
-    time.sleep(60)
+    time.sleep(30)
