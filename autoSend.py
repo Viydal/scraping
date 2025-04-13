@@ -1,6 +1,5 @@
 import socket
 import os
-import actionDefinitions
 import pydirectinput
 import time
 import random
