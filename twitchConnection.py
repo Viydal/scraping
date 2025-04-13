@@ -42,6 +42,5 @@ while True:
         print("response not a message, skipping...")
         continue
 
-    # Attempt to match message to expected text
-    for commandLibrary in actionDefinitions.library:
-        actionDefinitions.matchCommand(message, commandLibrary)
+    # Attempt to match message to expected commands
+    actionDefinitions.matchCommand(message)

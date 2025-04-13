@@ -11,78 +11,74 @@ rightCommands = ["d", "right", "go right", "move right", "walk right"]
 clickCommands = ["click", "punch", "hit", "attack"]
 crouchCommands = ["crouch", "sit"]
 jumpCommands = ["space", 'jump']
-inventoryCommands = ["q", "drop", "throw", "water bucket release", "water bucket, release"]
+inventoryCommands = ["q", "f", "offhand", "drop", "throw", "water bucket release", "water bucket, release"]
 lookCommands = ["look left", "look right", "look up", "look down", "turn left", "turn right", "look back", "look behind", "turn back"]
 
-library = [forwardCommands, backCommands, leftCommands, rightCommands, clickCommands, crouchCommands, jumpCommands, inventoryCommands, lookCommands]
+# All commands
+commandMap = {
+    "forward": forwardCommands,
+    "back": backCommands,
+    "left": leftCommands,
+    "right": rightCommands,
+    "click": clickCommands,
+    "crouch": crouchCommands,
+    "jump": jumpCommands,
+    "inventory": inventoryCommands,
+    "look": lookCommands
+}
+
+# Cooldown for each respective command
+consequenceValues = {
+    "forward": 2,
+    "back": 2,
+    "left": 2,
+    "right": 2,
+    "click": 1,
+    "crouch": 1,
+    "jump": 1,
+    "inventory": 5,
+    "look": 5
+}
 
 # Match command to the appropriate library
-def matchCommand(message, commandLibrary):
-    for command in commandLibrary:
-        if (message == command):
+def matchCommand(message):
+    for action, commands in commandMap.items():
+        if message in commands:
             print("match found")
-            if (commandLibrary == forwardCommands):
-                print("we in forward library")
-                handleConsequence("forward")
-            elif (commandLibrary == backCommands):
-                print("we in back library")
-                handleConsequence("back", message)
-            elif (commandLibrary == leftCommands):
-                print("we in left library")
-                handleConsequence("left")
-            elif (commandLibrary == rightCommands):
-                print("we in right library")
-                handleConsequence("right")
-            elif (commandLibrary == clickCommands):
-                print("we in click library")
-                handleConsequence("click")
-            elif (commandLibrary == crouchCommands):
-                print("we in crouch library")
-                handleConsequence("crouch")
-            elif (commandLibrary == jumpCommands):
-                print("we in jump library")
-                handleConsequence("jump")
-            elif (commandLibrary == inventoryCommands):
-                print("we in inventory library")
-                handleConsequence("inventory")
-            elif (commandLibrary == lookCommands):
-                print("we in look library")
-                handleConsequence("look", message)
-            else:
-                print("no match")
+            handleConsequence(action, message)
 
 def handleConsequence(action, message=None):
     if (action == "forward"):
-        pydirectinput.keyDown('w')
-        time.sleep(3)
-        pydirectinput.keyUp('w')
+        holdAndRelease('w', 3)
+        time.sleep(consequenceValues[action])
     elif (action == "back"):
         if (hashing(message) == 72428855):
-            if (random.randint(1, 3) == 1):
-                for i in range(30):
-                    randomiseInputs()
+            for i in range(20):
+                randomiseInputs()
         else:
-            pydirectinput.keyDown('s')
-            time.sleep(3)
-            pydirectinput.keyUp('s')
+            holdAndRelease('s', 3)
+            time.sleep(consequenceValues[action])
     elif (action == "left"):
-        pydirectinput.keyDown('a')
-        time.sleep(3)
-        pydirectinput.keyUp('a')
+        holdAndRelease('a', 3)
+        time.sleep(consequenceValues[action])
     elif (action == "right"):
-        pydirectinput.keyDown('d')
-        time.sleep(3)
-        pydirectinput.keyUp('d')
+        holdAndRelease('d', 3)
+        time.sleep(consequenceValues[action])
     elif (action == "click"):
         pydirectinput.click()
+        time.sleep(consequenceValues[action])
     elif (action == "crouch"):
-        pydirectinput.keyDown('r')
-        time.sleep(3)
-        pydirectinput.keyUp('r')
+        holdAndRelease('r', 3)
+        time.sleep(consequenceValues[action])
     elif (action == "jump"):
         pydirectinput.press('space')
+        time.sleep(consequenceValues[action])
     elif (action == "inventory"):
-        pydirectinput.press('q')
+        if (message == "f" or message == "offhand"):
+            pydirectinput.press('f')
+        else:
+            pydirectinput.press('q')
+        time.sleep(consequenceValues[action])
     elif (action == "look"):
         if (message == "look left" or message == "turn left"):
             pydirectinput.move(-400, 400)
@@ -94,9 +90,7 @@ def handleConsequence(action, message=None):
             pydirectinput.move(400, 400)
         elif (message == "look back" or message == "look behind" or message == "turn back"):
             pydirectinput.move(1000, 400)
-
-    # Wait for next command
-    time.sleep(1) 
+        time.sleep(consequenceValues[action])
     
 # Test functions
 def sendLetter():
@@ -112,7 +106,7 @@ def randomiseInputs():
     if (random.randint(0, 1) == 0):
         key = random.choice(possibleMovesKB)
         pydirectinput.keyDown(key)
-        time.sleep(0.5)
+        time.sleep(0.1)
         pydirectinput.keyUp(key)
     else:
         move = random.choice(possibleMovesM)
@@ -124,5 +118,16 @@ def randomiseInputs():
             pydirectinput.move(-400, 0)
         if (move == "lookRight"):
             pydirectinput.move(400, 0)
-    
-randomiseInputs()
+    pydirectinput.keyDown('ctrl')
+    pydirectinput.keyDown('b')
+    pydirectinput.keyUp('ctrl')
+    pydirectinput.keyUp('b')
+    pydirectinput.keyDown('f3')
+    pydirectinput.keyDown('g')
+    pydirectinput.keyUp('f3')
+    pydirectinput.keyUp('g')
+
+def holdAndRelease(key, sleepTime):
+    pydirectinput.keyDown(key)
+    time.sleep(sleepTime)
+    pydirectinput.keyUp(key)
