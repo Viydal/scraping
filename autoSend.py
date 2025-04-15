@@ -7,8 +7,8 @@ import random
 # Defining TCP connection
 HOST = "irc.chat.twitch.tv"
 PORT = 6667
-NICK = "viydal"
-TOKEN = "oauth:22d2hg8c0oseazhfdyzn2bnvdh8b3a"
+NICK = "taril2g"
+TOKEN = ""
 CHANNEL = "#longy104"
 
 if (TOKEN == None):
@@ -33,4 +33,6 @@ while True:
     connection.send(f"PRIVMSG {CHANNEL} :{message}\r\n".encode())
     print(f"Sent message: {message}")
 
-    time.sleep(30)
+    sleep = random.randint(10, 60)
+    print(f"sleeping for {sleep} seconds\n")
+    time.sleep(sleep)
