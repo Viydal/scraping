@@ -5,16 +5,21 @@ from pydub import AudioSegment
 import google.generativeai as genai
 import random
 import socket
+import requests
+
+TWITCH_USER = "longy104"
 
 HOST = "irc.chat.twitch.tv"
 PORT = 6667
 NICK = "taril2g"
 TOKEN = ""
-CHANNEL = "#viydal" # CHANGE THIS TO STREAMER NAME
+CHANNEL = f"#{TWITCH_USER}" # CHANGE THIS TO STREAMER NAME
+CLIENT_ID = ""
 
-TWITCH_URL = "https://www.twitch.tv/viydal" # CHANGE THIS TO STREAM URL
+TWITCH_URL = f"https://www.twitch.tv/{TWITCH_USER}" # CHANGE THIS TO STREAM URL
 STREAM_AUDIO_FILE = "streamAudio.mp3"
 TRANSCRIPT_FILE = "transcript.txt"
+CONTEXT_FILE = "context.txt"
 
 GOOGLE_API_KEY = ""
 
@@ -49,21 +54,40 @@ def transcribeAudio():
     print("transcribing...")
     model = whisper.load_model("base")
     result = model.transcribe(STREAM_AUDIO_FILE)
-    with open(TRANSCRIPT_FILE, "w", errors="ignore") as text_file:
-        text_file.write(result["text"])
-    print(f"transcription complete, saved to {TRANSCRIPT_FILE}")
+    with open(TRANSCRIPT_FILE, "w", errors="ignore") as transcript_file:
+        transcript_file.write(result["text"])
+        print(f"transcription complete, saved to {TRANSCRIPT_FILE}")
+    with open(TRANSCRIPT_FILE, "a", errors="ignore") as context_file:
+        context_file.write(result["text"])
+        print(f"context complete, saved to {CONTEXT_FILE}")
 
+def getCategory():
+    HEADERS = {
+        'Client-ID': CLIENT_ID,
+        'Authorization': f"Bearer {TOKEN}"
+    }
+
+    stream_url = f"https://api.twitch.tv/helix/streams?user_login={TWITCH_USER}"
+    stream_response = requests.get(stream_url, headers=HEADERS)
+    
+    # Parse user response
+    stream_data = stream_response.json()
+    print(stream_data)
+    
+    if "data" in stream_data and len(stream_data["data"]) > 0:
+        category = stream_data["data"][0]["game_name"]
+        print(f"Streamer is currently playing: {category}")
+        return category
+    else:
+        print("Streamer is offline or stream category unknown.")
+        return "unknown game"
+    
 def prompt():
     with open("transcript.txt", "r") as transcribed_text:
         input = transcribed_text.read()
-        # print(f"generating a response with the following text: {input}")
-
-    prompt_text = ("you are going to be fed a snippet of a twitch stream transcript, and i want you to do your best to reply to it while "
-    "sounding like a normal viewer. please find one central theme to the snippet and use it to generate your response. if you feel you are not able "
-    "to identify a central theme with 100 percent certainty please simply reply with: \"no comment available\". please make your response feel extra "
-    "extra human-like, like an 18 year old boy and not too long. no use of quotes, apostrophes, or special characters (like !, ?, and .). Please remember to "
-    "make the message short and dont finish the message with fr or ngl. If the transcript mentions anything that sounds like \"taril\" or \"taro\" it is talking to you so please respond like it is talking about you. The following is the transcript in question:\n"
-    f" {input}")
+    # with open("context")
+    context_text = (f"The following are things youve been told and how youve subsequently responded:")
+    prompt_text = (f"You are an 18-year-old boy named Taro (occassionally referred to as \"Taril\", \"Tower\", \"Tarrow\", and \"Tarot\"), you enjoy watching streamers play games and actively try to communicate to them in chat. Your messages are fairly short and dont use any special characters or apostrophes. The game the streamer may or may not be playing is {game}, so take this into consideration when formulating your response. You will be fed a portion of the stream and should attempt to give your best response, ")
 
     # print(prompt_text)
     response = model.generate_content(prompt_text)
@@ -76,19 +100,20 @@ def validTranscription():
         words = content.split()
         wordCount = len(words)
     
-    if (wordCount < 15):
+    if (wordCount < 10):
         return False
     else:
         return True
 
 while True:
-    randomWait = random.randint(5, 20)
+    randomWait = random.randint(20, 50)
 
     time.sleep(randomWait)
-    recordClip()
-    transcribeAudio()
+    # recordClip()
+    # transcribeAudio()
 
     if validTranscription():
-        message = prompt()
+        # message = prompt()
 
+        message = "dwqqwddqdqwdqwdq"
         connection.send(f"PRIVMSG {CHANNEL} :{message}\r\n".encode())
